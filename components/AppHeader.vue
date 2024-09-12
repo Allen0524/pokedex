@@ -25,7 +25,7 @@ const isDark = computed({
         <!-- Logo -->
         <NuxtLink to="/" class="flex items-center gap-3">
             <img src="/images/logo.webp" alt="PokéDex Logo" class="h-16 w-auto" />
-            <span class="text-2xl font-bold">PokeDict</span>
+            <span class="text-3xl font-bold font-comforter">PokeDict</span>
         </NuxtLink>
 
         <!-- Naigation -->
