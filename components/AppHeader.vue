@@ -21,7 +21,7 @@ const isDark = computed({
 </script>
 
 <template>
-    <header class="container mx-auto px-4 flex items-center justify-between py-10">
+    <header class="container sticky top-0 mx-auto px-4 flex items-center justify-between py-10">
         <!-- Logo -->
         <NuxtLink to="/" class="flex items-center gap-3">
             <img src="/images/logo.webp" alt="PokéDex Logo" class="h-16 w-auto" />
