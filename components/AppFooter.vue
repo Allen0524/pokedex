@@ -37,10 +37,11 @@
                     target="_blank"
                     href="https://github.com/Allen0524/pokedex"
                     rel="noopener noreferrer"
+                    class="p-1"
                 >
                     <img src="/images/github.svg" alt="GitHub" class="w-4 h-4" />
                 </a>
-                <a href="mailto:william0318563@gmail.com">
+                <a href="mailto:william0318563@gmail.com" class="p-1">
                     <img src="/images/gmail.svg" alt="Gmail" class="w-4 h-4" />
                 </a>
             </div>

@@ -11,9 +11,9 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                comforter: ["var(--font-comforter)"],
-                josefin: ["var(--font-josefin)"],
-                spline: ["var(--font-spline)"],
+                comforter: ["Comforter Brush", "cursive"],
+                josefin: ["Josefin Sans", "sans-serif"],
+                spline: ["Spline Sans Mono", "monospace"],
             },
             colors: {
                 "primary-ivory": "#fffff0",

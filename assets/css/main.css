@@ -5,9 +5,6 @@
 :root {
     --color-background: #fffff0;
     --color-text: #1a1a1a;
-    --font-comforter: "Comforter Brush", cursive;
-    --font-josefin: "Josefin Sans", sans-serif;
-    --font-spline: "Spline Sans Mono", monospace;
 }
 
 :root.dark {
