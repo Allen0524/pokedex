@@ -1,7 +1,7 @@
 export interface Pokemon {
     id: number;
     name: string;
-    type: { name: string; url: string }[];
+    types: { name: string; url: string }[];
     abilities: { name: string; url: string; is_hidden: boolean }[];
     images: {
         front_default: string;
@@ -23,7 +23,7 @@ export const pokemons: Pokemon[] = [
             { name: "overgrow", url: "https://pokeapi.co/api/v2/ability/65/", is_hidden: false },
             { name: "chlorophyll", url: "https://pokeapi.co/api/v2/ability/34/", is_hidden: true },
         ],
-        type: [
+        types: [
             { name: "grass", url: "https://pokeapi.co/api/v2/type/12/" },
             { name: "poison", url: "https://pokeapi.co/api/v2/type/4/" },
         ],
@@ -51,7 +51,7 @@ export const pokemons: Pokemon[] = [
     {
         id: 4,
         name: "Charmander",
-        type: [{ name: "fire", url: "https://pokeapi.co/api/v2/type/10/" }],
+        types: [{ name: "fire", url: "https://pokeapi.co/api/v2/type/10/" }],
         abilities: [
             { name: "blaze", url: "https://pokeapi.co/api/v2/ability/66/", is_hidden: false },
             { name: "solar-power", url: "https://pokeapi.co/api/v2/ability/94/", is_hidden: true },
@@ -80,7 +80,7 @@ export const pokemons: Pokemon[] = [
     {
         id: 7,
         name: "Squirtle",
-        type: [{ name: "water", url: "https://pokeapi.co/api/v2/type/11/" }],
+        types: [{ name: "water", url: "https://pokeapi.co/api/v2/type/11/" }],
         abilities: [
             { name: "torrent", url: "https://pokeapi.co/api/v2/ability/67/", is_hidden: false },
             { name: "rain-dish", url: "https://pokeapi.co/api/v2/ability/44/", is_hidden: true },
@@ -109,7 +109,7 @@ export const pokemons: Pokemon[] = [
     {
         id: 25,
         name: "Pikachu",
-        type: [{ name: "electric", url: "https://pokeapi.co/api/v2/type/13/" }],
+        types: [{ name: "electric", url: "https://pokeapi.co/api/v2/type/13/" }],
         abilities: [
             { name: "static", url: "https://pokeapi.co/api/v2/ability/9/", is_hidden: false },
             {
