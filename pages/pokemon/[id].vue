@@ -83,163 +83,169 @@ const extractIdFromUrl = (url: string): number => {
 onMounted(() => {
     fetchPokemon();
 });
+
+const genderRatio = computed(() => {
+    if (!speciesState.value.data) return "Unknown";
+    if (speciesState.value.data.gender_rate === -1) return "Genderless";
+    const femaleRatio = (speciesState.value.data.gender_rate / 8) * 100;
+    const maleRatio = 100 - femaleRatio;
+    return `${maleRatio}% Male, ${femaleRatio}% Female`;
+});
 </script>
 
 <template>
-    <Container>
+    <Container class="py-4">
         <UCard>
             <template #header>
-                <NuxtLink to="/pokemons" class="text-blue-500 hover:underline"
-                    >&larr; Back to list</NuxtLink
+                <NuxtLink
+                    to="/pokemons"
+                    class="text-primary-500 flex items-center w-fit hover:underline"
                 >
+                    <UIcon name="i-heroicons-arrow-left" class="mr-2" />
+                    Back to list
+                </NuxtLink>
             </template>
 
-            <div class="flex flex-col lg:flex-row gap-8">
-                <!-- Pokemon image -->
-                <div class="w-full md:w-1/3">
-                    <USkeleton v-if="pokemonState.status === 'pending'" class="w-full h-full" />
-                    <div v-else-if="pokemonState.status === 'error'" class="text-red-500">
-                        Error: {{ pokemonState.error?.message }}
+            <div v-if="pokemonState.data" class="flex flex-col md:flex-row gap-8">
+                <!-- Pokemon image and basic info -->
+                <div class="w-full md:w-1/3 space-y-4">
+                    <div class="relative">
+                        <img
+                            :src="pokemonState.data.sprites.other['official-artwork'].front_default"
+                            :alt="pokemonState.data.name"
+                            class="w-full object-contain bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg"
+                        />
+                        <PokemonCry :url="pokemonState.data.cries.latest" />
                     </div>
-                    <img
-                        v-else-if="pokemonState.data"
-                        :src="pokemonState.data.sprites.other['official-artwork'].front_default"
-                        :alt="pokemonState.data?.name"
-                        class="w-full object-contain bg-gray-100 rounded-lg"
-                    />
+                    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
+                        <h2 class="text-lg font-semibold mb-2">Basic Info</h2>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <div>
+                                <strong>Height:</strong>
+                                {{ (pokemonState.data.height / 10).toFixed(1) }} m
+                            </div>
+                            <div>
+                                <strong>Weight:</strong>
+                                {{ (pokemonState.data.weight / 10).toFixed(1) }} kg
+                            </div>
+                            <div>
+                                <strong>Base Exp:</strong> {{ pokemonState.data.base_experience }}
+                            </div>
+                            <div>
+                                <strong>Base Happiness:</strong>
+                                {{ speciesState.data?.base_happiness }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
+                        <h2 class="text-xl font-semibold mb-2">Gender Ratio</h2>
+                        <p>{{ genderRatio }}</p>
+                    </div>
                 </div>
 
-                <!-- Pokemon details -->
-                <div class="w-full lg:w-2/3">
-                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4">
-                        <h1 class="text-3xl font-bold capitalize mb-4">
-                            {{ pokemonState.data?.name }}
-                            <span class="text-gray-500 ml-2"
-                                ># {{ pokemonState.data?.id?.toString().padStart(3, "0") }}</span
+                <!-- Right Side: Pokemon details -->
+                <div class="w-full md:w-2/3 space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                        <h1 class="text-3xl font-bold capitalize">
+                            {{ pokemonState.data.name }}
+                            <span class="text-gray-500 text-xl ml-2"
+                                >#{{ pokemonState.data.id.toString().padStart(3, "0") }}</span
                             >
                         </h1>
-                        <!-- Types -->
                         <div class="flex flex-wrap gap-2 mt-2 sm:mt-0">
                             <PokemonType
-                                v-for="type in pokemonState.data?.types"
+                                v-for="type in pokemonState.data.types"
                                 :key="type.type.name"
                                 :type="type.type.name"
-                                size="md"
+                                size="lg"
                             />
                         </div>
                     </div>
-                    <!-- Basic Info -->
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <strong>Height:</strong>
-                            {{
-                                pokemonState.data?.height
-                                    ? (pokemonState.data.height / 10).toFixed(1)
-                                    : "N/A"
-                            }}
-                            m
-                        </div>
-                        <div>
-                            <strong>Weight:</strong>
-                            {{
-                                pokemonState.data?.weight
-                                    ? (pokemonState.data.weight / 10).toFixed(1)
-                                    : "N/A"
-                            }}
-                            kg
-                        </div>
-                        <div>
-                            <strong>Base Experience:</strong>
-                            {{
-                                pokemonState.data?.base_experience
-                                    ? pokemonState.data.base_experience
-                                    : "N/A"
-                            }}
-                        </div>
-                        <div>
-                            <strong>Base Happiness:</strong>
-                            {{
-                                speciesState.data?.base_happiness
-                                    ? speciesState.data.base_happiness
-                                    : ""
-                            }}
-                        </div>
-                        <div>
-                            <strong>Capture Rate:</strong>
-                            {{
-                                speciesState.data?.capture_rate
-                                    ? speciesState.data.capture_rate
-                                    : ""
-                            }}
-                        </div>
-                        <div>
-                            <strong>Growth Rate:</strong>
-                            {{
-                                speciesState.data?.growth_rate?.name
-                                    ? speciesState.data.growth_rate.name
-                                    : ""
-                            }}
-                        </div>
-                    </div>
-                    <!-- Characteristics -->
-                    <div class="mb-4">
-                        <h2 class="text-xl font-semibold mb-2">Characteristics</h2>
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <strong>Color:</strong>
-                                {{
-                                    speciesState.data?.color?.name
-                                        ? speciesState.data.color.name
-                                        : ""
-                                }}
-                            </div>
-                            <div>
-                                <strong>Shape:</strong>
-                                {{
-                                    speciesState.data?.shape?.name
-                                        ? speciesState.data.shape.name
-                                        : ""
-                                }}
-                            </div>
-                            <div>
-                                <strong>Habitat:</strong>
-                                {{
-                                    speciesState.data?.habitat?.name
-                                        ? speciesState.data.habitat.name
-                                        : ""
-                                }}
-                            </div>
-                            <div>
-                                <strong>Generation:</strong>
-                                {{
-                                    speciesState.data?.generation?.name
-                                        ? speciesState.data.generation.name
-                                        : ""
-                                }}
-                            </div>
-                        </div>
-                    </div>
+
                     <!-- Description -->
-                    <!-- <p class="mb-4">{{  pokemon.  }}</p> -->
+                    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
+                        <h2 class="text-xl font-semibold mb-2">Description</h2>
+                        <p>
+                            {{
+                                speciesState.data?.flavor_text_entries[0].flavor_text
+                                    .replace(/\n/g, " ")
+                                    .replace(/\f/g, " ")
+                                    .replace(/\s+/g, " ")
+                                    .trim()
+                            }}
+                        </p>
+                    </div>
 
                     <!-- Stats -->
+                    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
+                        <h2 class="text-xl font-semibold mb-2">Stats</h2>
+                        <div class="space-y-2">
+                            <div
+                                v-for="stat in pokemonState.data.stats"
+                                :key="stat.stat.name"
+                                class="flex items-center"
+                            >
+                                <span class="w-1/4 capitalize">{{ stat.stat.name }}:</span>
+                                <UProgress :value="stat.base_stat" :max="255" class="w-3/4" />
+                                <span class="ml-2">{{ stat.base_stat }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Moves -->
+                    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
+                        <h2 class="text-xl font-semibold mb-2">Moves</h2>
+                        <ul class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                            <li
+                                v-for="move in pokemonState.data.moves.slice(0, 15)"
+                                :key="move.move.name"
+                                class="capitalize"
+                            >
+                                {{ move.move.name.replace("-", " ") }}
+                            </li>
+                        </ul>
+                        <p
+                            v-if="pokemonState.data.moves.length > 15"
+                            class="mt-2 text-sm text-gray-600 dark:text-gray-400"
+                        >
+                            And {{ pokemonState.data.moves.length - 15 }} more...
+                        </p>
+                    </div>
 
                     <!-- Abilities -->
-                    <section class="mb-4">
+                    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
                         <h2 class="text-xl font-semibold mb-2">Abilities</h2>
                         <ul class="list-disc list-inside">
                             <li
-                                v-for="ability in pokemonState.data?.abilities"
+                                v-for="ability in pokemonState.data.abilities"
                                 :key="ability.ability.name"
                                 class="capitalize"
                             >
                                 {{ ability.ability.name }} {{ ability.is_hidden ? "(Hidden)" : "" }}
                             </li>
                         </ul>
-                    </section>
+                    </div>
+
+                    <!-- Characteristics -->
+                    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
+                        <h2 class="text-xl font-semibold mb-2">Characteristics</h2>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div><strong>Color:</strong> {{ speciesState.data?.color?.name }}</div>
+                            <div><strong>Shape:</strong> {{ speciesState.data?.shape?.name }}</div>
+                            <div>
+                                <strong>Habitat:</strong>
+                                {{ speciesState.data?.habitat?.name || "Unknown" }}
+                            </div>
+                            <div>
+                                <strong>Generation:</strong>
+                                {{ speciesState.data?.generation?.name }}
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Additional Info -->
-                    <section>
+                    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
                         <h2 class="text-xl font-semibold mb-2">Additional Info</h2>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
                             <div>
@@ -263,17 +269,24 @@ onMounted(() => {
                                 {{ speciesState.data?.forms_switchable ? "Yes" : "No" }}
                             </div>
                         </div>
-                    </section>
+                    </div>
 
                     <!-- Evolution Chain -->
-                    <section class="w-full mt-6">
-                        <h2 class="text-xl font-semibold mb-4">Evolution Chain</h2>
+                    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
+                        <h2 class="text-xl font-semibold mb-2">Evolution Chain</h2>
+                        <USkeleton v-if="evolutionChainState.status === 'pending'" class="h-20" />
+                        <div
+                            v-else-if="evolutionChainState.status === 'error'"
+                            class="text-red-500"
+                        >
+                            Error: {{ evolutionChainState.error?.message }}
+                        </div>
                         <EvolutionChainDisplay
-                            v-if="processedEvolutionChain"
+                            v-else-if="processedEvolutionChain"
                             :evolution-chain="processedEvolutionChain"
                         />
                         <p v-else>No evolution data available</p>
-                    </section>
+                    </div>
                 </div>
             </div>
         </UCard>

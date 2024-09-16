@@ -6,13 +6,32 @@ export interface Pokemon {
     order: number;
     base_experience: number;
     sprites: {
+        back_default: string;
+        back_female: string | null;
+        back_shiny: string;
+        back_shiny_female: string | null;
+        front_default: string;
+        front_female: string | null;
+        front_shiny: string;
+        front_shiny_female: string | null;
         other: {
-            front_default: string;
+            dream_world: {
+                front_default: string;
+                front_female: string | null;
+            };
+            home: {
+                front_default: string;
+                front_female: string | null;
+                front_shiny: string;
+                front_shiny_female: string | null;
+            };
             "official-artwork": {
                 front_default: string;
+                front_female: string | null;
             };
         };
     };
+    moves: { move: { name: string; url: string } }[];
     species: { name: string; url: string };
     types: { type: { name: string; url: string } }[];
     abilities: { ability: { name: string; url: string }; is_hidden: boolean }[];
@@ -32,6 +51,7 @@ export interface PokemonSpecies {
     has_gender_differences: boolean;
     forms_switchable: boolean;
     growth_rate: { name: string; url: string };
+    flavor_text_entries: { flavor_text: string; language: { name: string; url: string } }[];
     color: { name: string; url: string };
     shape: { name: string; url: string };
     evolution_chain: { url: string };

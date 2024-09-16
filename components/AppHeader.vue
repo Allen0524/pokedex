@@ -22,7 +22,7 @@ const isDark = computed({
 
 <template>
     <header
-        class="container sticky top-0 mx-auto px-4 flex items-center bg-primary-ivory z-50 justify-between py-10"
+        class="container sticky top-0 bg-white mx-auto px-4 flex items-center z-50 justify-between py-10"
     >
         <!-- Logo -->
         <NuxtLink to="/" class="flex items-center gap-3">
