@@ -6,8 +6,8 @@ const store = useConfigStore();
 const { loading, currentPage, pokemons, itemsPerPage, totalCount } = storeToRefs(store);
 
 onMounted(() => {
+    store.fetchPokemons();
     if (pokemons.value.length === 0) {
-        store.fetchPokemons();
     }
 });
 </script>
@@ -32,11 +32,11 @@ onMounted(() => {
         </template>
         <template v-else-if="pokemons">
             <PokemonCard
-                v-for="pokemon in pokemons"
+                v-for="{ pokemon, species } in pokemons"
                 :key="pokemon.id"
                 :id="pokemon.id"
                 :name="
-                    pokemon.names.find((name) => name.language.name === locale)?.name ||
+                    species.names.find((name) => name.language.name === locale)?.name ||
                     pokemon.name
                 "
                 :order="pokemon.order"

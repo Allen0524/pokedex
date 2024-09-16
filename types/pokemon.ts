@@ -64,6 +64,12 @@ export interface PokemonSpecies {
     names: PokemonNames;
 }
 
+export interface PokemonTypesResponse {
+    id: number;
+    name: string;
+    pokemon: { pokemon: { name: string; url: string }; slot: number }[];
+}
+
 export interface EvolutionChainLink {
     baby_trigger_item: { name: string; url: string } | null;
     chain: EvolutionChain;

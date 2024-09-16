@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n();
+
 const filters = ref({
     name: "",
     types: [] as string[],
@@ -25,12 +26,12 @@ const applyFilter = (newFilters: { name: string; types: string[]; generations: n
         <h1>{{ t("common.pokemons") }}</h1>
         <div class="flex flex-col md:flex-row gap-8">
             <!-- Left side - Filter -->
-            <div class="w-full md:w-1/4">
+            <div class="w-full md:w-1/3 lg:w-1/4">
                 <PokemonFilter @filter-change="applyFilter" />
             </div>
 
             <!-- Right side - List -->
-            <div class="w-full md:w-3/4">
+            <div class="w-full md:w-2/3 lg:w-3/4">
                 <PokemonList />
             </div>
         </div>

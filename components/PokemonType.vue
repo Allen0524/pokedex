@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const { t } = useI18n();
+
 const props = defineProps<{
     type: string;
     size?: "sm" | "md" | "lg";
@@ -82,6 +84,6 @@ const handleClick = () => {
         @click="handleClick"
         :type="selected ? 'button' : undefined"
     >
-        {{ type }}
+        {{ t(`types.${type}`) }}
     </component>
 </template>

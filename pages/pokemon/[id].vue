@@ -87,7 +87,7 @@ onMounted(() => {
 
 const genderRatio = computed(() => {
     if (!speciesState.value.data) return "Unknown";
-    if (speciesState.value.data.gender_rate === -1) return "Genderless";
+    if (speciesState.value.data.gender_rate === -1) return t("pokemon.genderLess");
     const femaleRatio = (speciesState.value.data.gender_rate / 8) * 100;
     const maleRatio = 100 - femaleRatio;
     return `${maleRatio}% Male, ${femaleRatio}% Female`;
@@ -119,7 +119,7 @@ const genderRatio = computed(() => {
                         <PokemonCry :url="pokemonState.data.cries.latest" />
                     </div>
                     <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
-                        <h2 class="text-lg font-semibold mb-2">{{ t("common.basicInfo") }}</h2>
+                        <h2 class="text-lg font-semibold mb-2">{{ t("pokemon.basicInfo") }}</h2>
                         <div class="grid grid-cols-2 gap-2 text-sm">
                             <div>
                                 <strong>{{ t("pokemon.height") }}:</strong>
