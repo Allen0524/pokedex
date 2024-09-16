@@ -80,9 +80,14 @@ export const useConfigStore = defineStore("config", {
             }
         },
 
+        debouncedFetchPokemons: debounce(async function (this: any) {
+            await this.fetchPokemons();
+        }, 300),
+
         setCurrentPage(page: number) {
             this.currentPage = page;
-            this.fetchPokemons();
+            this.loading = true;
+            this.debouncedFetchPokemons();
         },
 
         toggleType(type: number) {
@@ -93,7 +98,8 @@ export const useConfigStore = defineStore("config", {
             }
 
             this.currentPage = 1;
-            this.fetchPokemons();
+            this.loading = true;
+            this.debouncedFetchPokemons();
         },
     },
 });
