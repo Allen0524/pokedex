@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 
+const { locale } = useI18n();
 const store = useConfigStore();
 const { loading, currentPage, pokemons, itemsPerPage, totalCount } = storeToRefs(store);
 
@@ -34,7 +35,10 @@ onMounted(() => {
                 v-for="pokemon in pokemons"
                 :key="pokemon.id"
                 :id="pokemon.id"
-                :name="pokemon.name"
+                :name="
+                    pokemon.names.find((name) => name.language.name === locale)?.name ||
+                    pokemon.name
+                "
                 :order="pokemon.order"
                 :imagePath="pokemon.sprites.other['official-artwork'].front_default"
                 :types="pokemon.types"

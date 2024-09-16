@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { Pokemon } from "~/types/pokemon";
+import type { Pokemon, PokemonSpecies } from "~/types/pokemon";
 
 export const useConfigStore = defineStore("config", {
     state: () => ({
@@ -7,7 +7,7 @@ export const useConfigStore = defineStore("config", {
         currentPage: 1,
         itemsPerPage: 16,
         pokemons: [] as Pokemon[],
-        loading: false,
+        loading: true,
     }),
 
     getters: {
@@ -48,12 +48,18 @@ export const useConfigStore = defineStore("config", {
                 if (listData.value) {
                     this.totalCount = listData.value.count;
 
-                    // get every detail of the pokemon
-                    const pokemonPromises = listData.value.results.map((item) =>
-                        $fetch<Pokemon>(item.url).catch(() => null)
-                    );
-                    const pokemons = await Promise.all(pokemonPromises);
-                    this.pokemons = pokemons.filter((pokemon) => pokemon !== null);
+                    const pokemonAndSpeciesPromise = listData.value.results.map((item) => {
+                        return $fetch<Pokemon>(item.url).then((pokemon) =>
+                            $fetch<PokemonSpecies>(pokemon.species.url).then((species) => ({
+                                ...pokemon,
+                                names: species.names,
+                            }))
+                        );
+                    });
+
+                    const datas = await Promise.all(pokemonAndSpeciesPromise);
+
+                    this.pokemons = datas.filter((pokemon) => pokemon !== null);
                 }
             } finally {
                 this.loading = false;

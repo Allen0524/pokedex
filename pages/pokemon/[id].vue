@@ -13,6 +13,7 @@ interface FetchState<T> {
     data: T | null;
 }
 
+const { t, locale } = useI18n();
 const route = useRoute();
 const pokemonId = Number(route.params.id);
 
@@ -102,7 +103,7 @@ const genderRatio = computed(() => {
                     class="text-primary-500 flex items-center w-fit hover:underline"
                 >
                     <UIcon name="i-heroicons-arrow-left" class="mr-2" />
-                    Back to list
+                    {{ t("common.backToList") }}
                 </NuxtLink>
             </template>
 
@@ -118,28 +119,29 @@ const genderRatio = computed(() => {
                         <PokemonCry :url="pokemonState.data.cries.latest" />
                     </div>
                     <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
-                        <h2 class="text-lg font-semibold mb-2">Basic Info</h2>
+                        <h2 class="text-lg font-semibold mb-2">{{ t("common.basicInfo") }}</h2>
                         <div class="grid grid-cols-2 gap-2 text-sm">
                             <div>
-                                <strong>Height:</strong>
+                                <strong>{{ t("pokemon.height") }}:</strong>
                                 {{ (pokemonState.data.height / 10).toFixed(1) }} m
                             </div>
                             <div>
-                                <strong>Weight:</strong>
+                                <strong>{{ t("pokemon.weight") }}:</strong>
                                 {{ (pokemonState.data.weight / 10).toFixed(1) }} kg
                             </div>
                             <div>
-                                <strong>Base Exp:</strong> {{ pokemonState.data.base_experience }}
+                                <strong>{{ t("pokemon.baseExperience") }}:</strong>
+                                {{ pokemonState.data.base_experience }}
                             </div>
                             <div>
-                                <strong>Base Happiness:</strong>
+                                <strong>{{ t("pokemon.baseHappiness") }}:</strong>
                                 {{ speciesState.data?.base_happiness }}
                             </div>
                         </div>
                     </div>
 
                     <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
-                        <h2 class="text-xl font-semibold mb-2">Gender Ratio</h2>
+                        <h2 class="text-xl font-semibold mb-2">{{ t("pokemon.genderRatio") }}</h2>
                         <p>{{ genderRatio }}</p>
                     </div>
                 </div>
@@ -148,7 +150,11 @@ const genderRatio = computed(() => {
                 <div class="w-full md:w-2/3 space-y-6">
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center">
                         <h1 class="text-3xl font-bold capitalize">
-                            {{ pokemonState.data.name }}
+                            {{
+                                speciesState.data?.names.find(
+                                    ({ language }) => language.name === locale
+                                )?.name || pokemonState.data.name
+                            }}
                             <span class="text-gray-500 text-xl ml-2"
                                 >#{{ pokemonState.data.id.toString().padStart(3, "0") }}</span
                             >
@@ -165,21 +171,22 @@ const genderRatio = computed(() => {
 
                     <!-- Description -->
                     <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
-                        <h2 class="text-xl font-semibold mb-2">Description</h2>
+                        <h2 class="text-xl font-semibold mb-2">{{ t("pokemon.description") }}</h2>
                         <p>
                             {{
-                                speciesState.data?.flavor_text_entries[0].flavor_text
-                                    .replace(/\n/g, " ")
+                                speciesState.data?.flavor_text_entries
+                                    .find((item) => item.language.name === locale)
+                                    ?.flavor_text?.replace(/\n/g, " ")
                                     .replace(/\f/g, " ")
                                     .replace(/\s+/g, " ")
-                                    .trim()
+                                    .trim() || "No description available"
                             }}
                         </p>
                     </div>
 
                     <!-- Stats -->
                     <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
-                        <h2 class="text-xl font-semibold mb-2">Stats</h2>
+                        <h2 class="text-xl font-semibold mb-2">{{ t("pokemon.stats") }}</h2>
                         <div class="space-y-2">
                             <div
                                 v-for="stat in pokemonState.data.stats"
@@ -195,7 +202,7 @@ const genderRatio = computed(() => {
 
                     <!-- Moves -->
                     <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
-                        <h2 class="text-xl font-semibold mb-2">Moves</h2>
+                        <h2 class="text-xl font-semibold mb-2">{{ t("pokemon.moves") }}</h2>
                         <ul class="grid grid-cols-2 md:grid-cols-3 gap-2">
                             <li
                                 v-for="move in pokemonState.data.moves.slice(0, 15)"

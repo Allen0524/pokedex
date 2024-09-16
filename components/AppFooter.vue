@@ -1,17 +1,25 @@
+<script setup lang="ts">
+const { t } = useI18n();
+</script>
+
 <template>
     <footer class="container mx-auto px-4 py-10">
         <!-- Mobile Layout -->
         <ul class="md:hidden flex items-center justify-between text-xs">
             <li>
-                <NuxtLink class="underline underline-offset-2" to="/legal-information"
-                    >Legal Information</NuxtLink
-                >
+                <NuxtLink class="underline underline-offset-2" to="/legal-information">{{
+                    t("common.leagleInformation")
+                }}</NuxtLink>
             </li>
             <li>
-                <NuxtLink class="underline underline-offset-2" to="/about">About</NuxtLink>
+                <NuxtLink class="underline underline-offset-2" to="/about">{{
+                    t("common.about")
+                }}</NuxtLink>
             </li>
             <li>
-                <NuxtLink class="underline underline-offset-2" to="/site-map">Site Map</NuxtLink>
+                <NuxtLink class="underline underline-offset-2" to="/site-map">{{
+                    t("common.siteMap")
+                }}</NuxtLink>
             </li>
         </ul>
         <div class="flex items-center justify-between">
@@ -19,17 +27,19 @@
             <!-- Desktop Layout -->
             <ul class="hidden md:flex items-center justify-between gap-16 text-xs">
                 <li>
-                    <NuxtLink class="underline underline-offset-2" to="/legal-information"
-                        >Legal Information</NuxtLink
-                    >
+                    <NuxtLink class="underline underline-offset-2" to="/legal-information">{{
+                        t("common.leagleInformation")
+                    }}</NuxtLink>
                 </li>
                 <li>
-                    <NuxtLink class="underline underline-offset-2" to="/about">About</NuxtLink>
+                    <NuxtLink class="underline underline-offset-2" to="/about">{{
+                        t("common.about")
+                    }}</NuxtLink>
                 </li>
                 <li>
-                    <NuxtLink class="underline underline-offset-2" to="/site-map"
-                        >Site Map</NuxtLink
-                    >
+                    <NuxtLink class="underline underline-offset-2" to="/site-map">{{
+                        t("common.siteMap")
+                    }}</NuxtLink>
                 </li>
             </ul>
             <div class="flex items-center gap-7">

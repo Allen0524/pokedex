@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t } = useI18n();
 const filters = ref({
     name: "",
     types: [] as string[],
@@ -21,7 +22,7 @@ const applyFilter = (newFilters: { name: string; types: string[]; generations: n
 
 <template>
     <Container>
-        <h1>Pokémon Directory</h1>
+        <h1>{{ t("common.pokemons") }}</h1>
         <div class="flex flex-col md:flex-row gap-8">
             <!-- Left side - Filter -->
             <div class="w-full md:w-1/4">

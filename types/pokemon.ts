@@ -37,7 +37,10 @@ export interface Pokemon {
     abilities: { ability: { name: string; url: string }; is_hidden: boolean }[];
     stats: { base_stat: number; effort: number; stat: { name: string; url: string } }[];
     cries: { latest: string };
+    names: PokemonNames;
 }
+
+type PokemonNames = { name: string; language: { name: string; url: string } }[];
 
 export interface PokemonSpecies {
     id: number;
@@ -58,6 +61,7 @@ export interface PokemonSpecies {
     habitat: { name: string; url: string };
     generation: { name: string; url: string };
     genera: { genus: string; language: { name: string; url: string } }[];
+    names: PokemonNames;
 }
 
 export interface EvolutionChainLink {
