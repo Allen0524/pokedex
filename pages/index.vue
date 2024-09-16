@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import Container from "~/components/Container.vue";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 </script>
 
 <template>
@@ -13,7 +16,7 @@ import Container from "~/components/Container.vue";
             to="/pokemons"
             class="text-4xl px-8 py-3 text-indigo-700 transition-transform hover:scale-105"
         >
-            Explore
+            {{ t("common.explore") }}
         </NuxtLink>
     </Container>
 </template>

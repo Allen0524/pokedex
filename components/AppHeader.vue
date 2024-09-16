@@ -1,12 +1,16 @@
 <script setup lang="ts">
+const { locale } = useI18n();
 const languages = [
     [{ label: "English", value: "en", click: () => switchLanguage("en") }],
+    [{ label: "简体中文", value: "zh-CN", click: () => switchLanguage("zh-CN") }],
     [{ label: "繁體中文", value: "zh-TW", click: () => switchLanguage("zh-TW") }],
     [{ label: "日本語", value: "ja", click: () => switchLanguage("ja") }],
+    [{ label: "한국어", value: "ko", click: () => switchLanguage("ko") }],
 ];
 
 const switchLanguage = (value: string) => {
     console.log(value);
+    locale.value = value;
 };
 
 const colorMode = useColorMode();
