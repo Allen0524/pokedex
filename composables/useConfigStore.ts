@@ -18,20 +18,12 @@ export const useConfigStore = defineStore("config", {
             types: new Set(),
         } as FilterState,
         loading: true,
-        error: null as string | null,
+        error: null as Error | null,
     }),
 
     getters: {
         offset(): number {
             return (this.currentPage - 1) * this.itemsPerPage;
-        },
-        pokemonUrls(): string[] {
-            const startId = (this.currentPage - 1) * this.itemsPerPage + 1;
-            const endId = startId + this.itemsPerPage - 1;
-            return Array.from(
-                { length: this.itemsPerPage },
-                (_, index) => `https://pokeapi.co/api/v2/pokemon/${startId + index}`
-            );
         },
         chunkedUrls(): string[] {
             // slice means from start to end(not included)
@@ -40,23 +32,11 @@ export const useConfigStore = defineStore("config", {
     },
 
     actions: {
-        setFilters(newFilters: FilterState) {
-            this.filters = { ...this.filters, ...newFilters };
-        },
         clearFilters() {
-            this.filters.name = "";
-            this.filters.types.clear();
-        },
-
-        async fetchTotalCount() {
-            if (this.totalCount === 0) {
-                const { data } = await useFetch<{ count: number }>(
-                    "https://pokeapi.co/api/v2/pokemon?limit=1"
-                );
-                if (data.value) {
-                    this.totalCount = data.value.count;
-                }
-            }
+            this.filters = {
+                name: "",
+                types: new Set(),
+            };
         },
 
         async getAllPokemonUrls() {
@@ -77,29 +57,24 @@ export const useConfigStore = defineStore("config", {
                 pokemonsUrls.map((url) => $fetch<PokemonTypesResponse>(url))
             );
 
-            let urls = [] as string[];
-            pokemons.forEach((i) => {
-                const k = i.pokemon.map((j) => j.pokemon.url);
-                urls = [...urls, ...k];
-            });
+            let urls = pokemons.flatMap((i) => i.pokemon.map((j) => j.pokemon.url));
             this.totalCount = urls.length || 0;
             this.allUrls = urls;
         },
 
         async fetchPokemons() {
             this.loading = true;
+            this.error = null;
             try {
                 if (this.filters.types.size > 0 || this.filters.name !== "") {
                     await this.getUrlsByTypeFilters();
-                    const data = await fetchPokemonAndSpecies(this.chunkedUrls);
-                    this.pokemons = data.filter((pokemon) => pokemon !== null);
                 } else {
                     await this.getAllPokemonUrls();
-                    const data = await fetchPokemonAndSpecies(this.chunkedUrls);
-                    this.pokemons = data.filter((pokemon) => pokemon !== null);
                 }
+                const data = await fetchPokemonAndSpecies(this.chunkedUrls);
+                this.pokemons = data.filter((pokemon) => pokemon !== null);
             } catch (error) {
-                this.error = error as string;
+                this.error = error instanceof Error ? error : new Error(String(error));
             } finally {
                 this.loading = false;
             }
