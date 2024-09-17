@@ -28,7 +28,7 @@ onMounted(() => {
                 </div>
             </div>
         </template>
-        <template v-else-if="pokemons">
+        <template v-else-if="pokemons.length > 0">
             <PokemonCard
                 v-for="{ pokemon, species } in pokemons"
                 :key="pokemon.id"
@@ -42,9 +42,18 @@ onMounted(() => {
                 :types="pokemon.types"
             />
         </template>
-        <p v-else>No pokemons found.</p>
+        <div
+            v-else
+            class="col-span-full flex flex-col items-center justify-center p-8 bg-gray-100 rounded-lg"
+        >
+            <UIcon name="i-heroicons-face-frown" class="text-6xl text-gray-400 mb-4" />
+            <h3 class="text-xl font-semibold text-gray-700 mb-2">
+                {{ $t("common.noPokemonsFound") }}
+            </h3>
+        </div>
     </div>
     <UPagination
+        v-if="pokemons.length > 0"
         :prev-button="{
             icon: 'i-heroicons-arrow-small-left-20-solid',
             label: 'Prev',

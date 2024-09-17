@@ -16,6 +16,7 @@ export default defineI18nConfig(() => ({
                 searchByName: "Search by name",
                 enterPokemonName: "Enter Pokémon name",
                 filterByType: "Filter by type",
+                noPokemonsFound: "No pokemons found",
             },
             pokemon: {
                 height: "Height",
@@ -72,6 +73,7 @@ export default defineI18nConfig(() => ({
                 searchByName: "按名称搜索",
                 enterPokemonName: "输入宝可梦名称",
                 filterByType: "按类型过滤",
+                noPokemonsFound: "没有找到宝可梦",
             },
             pokemon: {
                 height: "身高",
@@ -128,6 +130,7 @@ export default defineI18nConfig(() => ({
                 searchByName: "按名稱搜索",
                 enterPokemonName: "輸入寶可夢名稱",
                 filterByType: "按屬性過濾",
+                noPokemonsFound: "沒有找到寶可夢",
             },
             pokemon: {
                 height: "身高",
@@ -184,6 +187,7 @@ export default defineI18nConfig(() => ({
                 searchByName: "名前で検索",
                 enterPokemonName: "ポケモンの名前を入力",
                 filterByType: "タイプで絞り込む",
+                noPokemonsFound: "ポケモンが見つかりません",
             },
             pokemon: {
                 height: "身長",
@@ -240,6 +244,7 @@ export default defineI18nConfig(() => ({
                 searchByName: "이름으로 검색",
                 enterPokemonName: "포켓몬의 이름을 입력",
                 filterByType: "유형으로 필터링",
+                noPokemonsFound: "포켓몬이 없습니다",
             },
             pokemon: {
                 height: "키",
