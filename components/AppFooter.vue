@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const localePath = useLocalePath();
 const { t } = useI18n();
 </script>
 
@@ -7,17 +8,19 @@ const { t } = useI18n();
         <!-- Mobile Layout -->
         <ul class="md:hidden flex items-center justify-between text-xs">
             <li>
-                <NuxtLink class="underline underline-offset-2" to="/legal-information">{{
-                    t("common.leagleInformation")
-                }}</NuxtLink>
+                <NuxtLink
+                    class="underline underline-offset-2"
+                    :to="localePath('/legal-information')"
+                    >{{ t("common.leagleInformation") }}</NuxtLink
+                >
             </li>
             <li>
-                <NuxtLink class="underline underline-offset-2" to="/about">{{
+                <NuxtLink class="underline underline-offset-2" :to="localePath('/about')">{{
                     t("common.about")
                 }}</NuxtLink>
             </li>
             <li>
-                <NuxtLink class="underline underline-offset-2" to="/site-map">{{
+                <NuxtLink class="underline underline-offset-2" :to="localePath('/site-map')">{{
                     t("common.siteMap")
                 }}</NuxtLink>
             </li>
@@ -27,17 +30,19 @@ const { t } = useI18n();
             <!-- Desktop Layout -->
             <ul class="hidden md:flex items-center justify-between gap-16 text-xs">
                 <li>
-                    <NuxtLink class="underline underline-offset-2" to="/legal-information">{{
-                        t("common.leagleInformation")
-                    }}</NuxtLink>
+                    <NuxtLink
+                        class="underline underline-offset-2"
+                        :to="localePath('/legal-information')"
+                        >{{ t("common.leagleInformation") }}</NuxtLink
+                    >
                 </li>
                 <li>
-                    <NuxtLink class="underline underline-offset-2" to="/about">{{
+                    <NuxtLink class="underline underline-offset-2" :to="localePath('/about')">{{
                         t("common.about")
                     }}</NuxtLink>
                 </li>
                 <li>
-                    <NuxtLink class="underline underline-offset-2" to="/site-map">{{
+                    <NuxtLink class="underline underline-offset-2" :to="localePath('/site-map')">{{
                         t("common.siteMap")
                     }}</NuxtLink>
                 </li>

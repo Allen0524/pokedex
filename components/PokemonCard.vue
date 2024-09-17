@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const localePath = useLocalePath();
 const props = defineProps<{
     id?: number;
     name?: string;
@@ -15,7 +16,7 @@ function formatPokedexNumber(number: number): string {
 <template>
     <NuxtLink
         :key="props.id"
-        :to="`/pokemon/${props.id}`"
+        :to="localePath(`/pokemon/${props.id}`)"
         prefetch-on="interaction"
         class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
     >

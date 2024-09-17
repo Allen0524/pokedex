@@ -2,6 +2,7 @@
 import Container from "~/components/Container.vue";
 import { useI18n } from "vue-i18n";
 
+const localePath = useLocalePath();
 const { t } = useI18n();
 </script>
 
@@ -13,7 +14,7 @@ const { t } = useI18n();
         </p>
 
         <NuxtLink
-            to="/pokemons"
+            :to="localePath('/pokemons')"
             class="text-4xl px-8 py-3 text-indigo-700 transition-transform hover:scale-105"
         >
             {{ t("common.explore") }}

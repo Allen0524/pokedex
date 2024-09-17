@@ -13,6 +13,7 @@ interface FetchState<T> {
     data: T | null;
 }
 
+const localePath = useLocalePath();
 const { t, locale } = useI18n();
 const route = useRoute();
 const pokemonId = Number(route.params.id);
@@ -68,6 +69,7 @@ const processedEvolutionChain = computed(() => {
         const id = extractIdFromUrl(stage.species.url);
         return {
             id,
+            // TODO: multi-language
             name: stage.species.name,
             image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
             evolvesTo: stage.evolves_to.map(processStage),
@@ -99,7 +101,7 @@ const genderRatio = computed(() => {
         <UCard>
             <template #header>
                 <NuxtLink
-                    to="/pokemons"
+                    :to="localePath('/pokemons')"
                     class="text-primary-500 flex items-center w-fit hover:underline"
                 >
                     <UIcon name="i-heroicons-arrow-left" class="mr-2" />
@@ -222,7 +224,7 @@ const genderRatio = computed(() => {
 
                     <!-- Abilities -->
                     <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
-                        <h2 class="text-xl font-semibold mb-2">Abilities</h2>
+                        <h2 class="text-xl font-semibold mb-2">{{ t("pokemon.abilities") }}</h2>
                         <ul class="list-disc list-inside">
                             <li
                                 v-for="ability in pokemonState.data.abilities"
@@ -236,16 +238,24 @@ const genderRatio = computed(() => {
 
                     <!-- Characteristics -->
                     <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
-                        <h2 class="text-xl font-semibold mb-2">Characteristics</h2>
+                        <h2 class="text-xl font-semibold mb-2">
+                            {{ t("pokemon.characteristics") }}
+                        </h2>
                         <div class="grid grid-cols-2 gap-2">
-                            <div><strong>Color:</strong> {{ speciesState.data?.color?.name }}</div>
-                            <div><strong>Shape:</strong> {{ speciesState.data?.shape?.name }}</div>
                             <div>
-                                <strong>Habitat:</strong>
+                                <strong>{{ t("pokemon.color") }}:</strong>
+                                {{ speciesState.data?.color?.name }}
+                            </div>
+                            <div>
+                                <strong>{{ t("pokemon.shape") }}:</strong>
+                                {{ speciesState.data?.shape?.name }}
+                            </div>
+                            <div>
+                                <strong>{{ t("pokemon.habitat") }}:</strong>
                                 {{ speciesState.data?.habitat?.name || "Unknown" }}
                             </div>
                             <div>
-                                <strong>Generation:</strong>
+                                <strong>{{ t("pokemon.generation") }}:</strong>
                                 {{ speciesState.data?.generation?.name }}
                             </div>
                         </div>
@@ -253,7 +263,9 @@ const genderRatio = computed(() => {
 
                     <!-- Additional Info -->
                     <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
-                        <h2 class="text-xl font-semibold mb-2">Additional Info</h2>
+                        <h2 class="text-xl font-semibold mb-2">
+                            {{ t("pokemon.additionalInfo") }}
+                        </h2>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
                             <div>
                                 <strong>Is Baby:</strong>
@@ -280,7 +292,9 @@ const genderRatio = computed(() => {
 
                     <!-- Evolution Chain -->
                     <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow">
-                        <h2 class="text-xl font-semibold mb-2">Evolution Chain</h2>
+                        <h2 class="text-xl font-semibold mb-2">
+                            {{ t("pokemon.evolutionChain") }}
+                        </h2>
                         <USkeleton v-if="evolutionChainState.status === 'pending'" class="h-20" />
                         <div
                             v-else-if="evolutionChainState.status === 'error'"
