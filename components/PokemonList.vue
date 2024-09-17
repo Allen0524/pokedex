@@ -7,8 +7,6 @@ const { loading, currentPage, pokemons, itemsPerPage, totalCount } = storeToRefs
 
 onMounted(() => {
     store.fetchPokemons();
-    if (pokemons.value.length === 0) {
-    }
 });
 </script>
 

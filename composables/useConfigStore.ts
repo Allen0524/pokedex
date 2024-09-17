@@ -1,45 +1,38 @@
 import { defineStore } from "pinia";
 import type { Pokemon, PokemonSpecies, PokemonTypesResponse } from "~/types/pokemon";
 
-interface FilterState {
-    name: string;
-    types: Set<number>;
-}
-
 export const useConfigStore = defineStore("config", {
     state: () => ({
         totalCount: 0,
         currentPage: 1,
         itemsPerPage: 16,
-        pokemons: [] as { pokemon: Pokemon; species: PokemonSpecies }[],
-        allUrls: [] as string[],
-        filters: {
-            name: "",
-            types: new Set(),
-        } as FilterState,
         loading: true,
-        error: null as Error | null,
+        error: shallowRef<Error | null>(null),
+        pokemons: shallowRef<{ pokemon: Pokemon; species: PokemonSpecies }[]>([]),
+        allUrls: shallowRef<string[]>([]),
+        filteredInput: "",
+        filteredTypes: shallowRef(new Set<number>()),
     }),
 
     getters: {
         offset(): number {
             return (this.currentPage - 1) * this.itemsPerPage;
         },
-        chunkedUrls(): string[] {
-            // slice means from start to end(not included)
-            return this.allUrls.slice(this.offset, this.offset + this.itemsPerPage);
-        },
     },
 
     actions: {
-        clearFilters() {
-            this.filters = {
-                name: "",
-                types: new Set(),
-            };
+        setFilteredInput(value: string) {
+            this.filteredInput = value;
         },
 
-        async getAllPokemonUrls() {
+        clearFilters() {
+            this.filteredInput = "";
+            this.filteredTypes.clear();
+            this.currentPage = 1;
+            this.fetchPokemons();
+        },
+
+        async fetchPokemonUrls() {
             const data = await $fetch<{
                 results: { name: string; url: string }[];
                 count: number;
@@ -49,15 +42,15 @@ export const useConfigStore = defineStore("config", {
             this.allUrls = data.results.map((i) => i.url);
         },
 
-        async getUrlsByTypeFilters() {
+        async fetchPokemonUrlsByType() {
             const baseUrl = "https://pokeapi.co/api/v2/type/";
-            const pokemonsUrls = Array.from(this.filters.types).map((type) => `${baseUrl}${type}`);
+            const pokemonsUrls = Array.from(this.filteredTypes).map((type) => `${baseUrl}${type}`);
 
             const pokemons = await Promise.all(
                 pokemonsUrls.map((url) => $fetch<PokemonTypesResponse>(url))
             );
 
-            let urls = pokemons.flatMap((i) => i.pokemon.map((j) => j.pokemon.url));
+            const urls = pokemons.flatMap((i) => i.pokemon.map((j) => j.pokemon.url));
             this.totalCount = urls.length || 0;
             this.allUrls = urls;
         },
@@ -66,12 +59,28 @@ export const useConfigStore = defineStore("config", {
             this.loading = true;
             this.error = null;
             try {
-                if (this.filters.types.size > 0 || this.filters.name !== "") {
-                    await this.getUrlsByTypeFilters();
+                if (this.filteredTypes.size > 0 || this.filteredInput !== "") {
+                    await this.fetchPokemonUrlsByType();
                 } else {
-                    await this.getAllPokemonUrls();
+                    await this.fetchPokemonUrls();
                 }
-                const data = await fetchPokemonAndSpecies(this.chunkedUrls);
+
+                await this.slicePage();
+            } catch (error) {
+                this.error = error instanceof Error ? error : new Error(String(error));
+            } finally {
+                this.loading = false;
+            }
+        },
+
+        async slicePage() {
+            this.loading = true;
+            try {
+                const chunkedUrls = this.allUrls.slice(
+                    this.offset,
+                    this.offset + this.itemsPerPage
+                );
+                const data = await fetchPokemonAndSpecies(chunkedUrls);
                 this.pokemons = data.filter((pokemon) => pokemon !== null);
             } catch (error) {
                 this.error = error instanceof Error ? error : new Error(String(error));
@@ -80,26 +89,28 @@ export const useConfigStore = defineStore("config", {
             }
         },
 
-        debouncedFetchPokemons: debounce(async function (this: any) {
-            await this.fetchPokemons();
-        }, 300),
+        debouncedFetchPokemon() {
+            const func = debounce(this.fetchPokemons, 300);
+            func();
+        },
 
         setCurrentPage(page: number) {
             this.currentPage = page;
-            this.loading = true;
-            this.debouncedFetchPokemons();
+            this.slicePage();
         },
 
-        toggleType(type: number) {
-            if (this.filters.types.has(type)) {
-                this.filters.types.delete(type);
+        async toggleType(type: number) {
+            const newTypes = new Set(this.filteredTypes);
+            if (newTypes.has(type)) {
+                newTypes.delete(type);
             } else {
-                this.filters.types.add(type);
+                newTypes.add(type);
             }
 
+            this.filteredTypes = newTypes;
+
             this.currentPage = 1;
-            this.loading = true;
-            this.debouncedFetchPokemons();
+            this.fetchPokemons();
         },
     },
 });

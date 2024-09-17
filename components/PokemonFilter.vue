@@ -5,18 +5,7 @@ const { t } = useI18n();
 const emit = defineEmits(["filter-change"]);
 
 const store = useConfigStore();
-const { filters } = storeToRefs(store);
-
-// watch(
-//     [selectedTypes, searchName],
-//     () => {
-//         emit("filter-change", {
-//             name: searchName.value,
-//             type: Array.from(selectedTypes.value),
-//         });
-//     },
-//     { immediate: true }
-// );
+const { filteredInput, filteredTypes } = storeToRefs(store);
 </script>
 
 <template>
@@ -38,11 +27,12 @@ const { filters } = storeToRefs(store);
             <!-- Name search -->
             <UFormGroup :label="t('common.searchByName')">
                 <UInput
-                    v-model="filters.name"
+                    :model-value="filteredInput"
                     :placeholder="t('common.enterPokemonName')"
                     icon="i-heroicons-magnifying-glass-20-solid"
                     color="gray"
                     variant="outline"
+                    @update:modelValue="store.setFilteredInput"
                 />
             </UFormGroup>
 
@@ -64,7 +54,7 @@ const { filters } = storeToRefs(store);
                             :type="type.name"
                             size="sm"
                             selectable
-                            :selected="filters.types.has(type.id)"
+                            :selected="filteredTypes.has(type.id)"
                             @click="store.toggleType(type.id)"
                         />
                     </div>
