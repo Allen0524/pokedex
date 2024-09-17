@@ -26,10 +26,12 @@ export const useConfigStore = defineStore("config", {
         },
 
         clearFilters() {
-            this.filteredInput = "";
-            this.filteredTypes.clear();
-            this.currentPage = 1;
-            this.fetchPokemons();
+            if (this.filteredInput !== "" || this.filteredTypes.size > 0) {
+                this.filteredInput = "";
+                this.filteredTypes.clear();
+                this.currentPage = 1;
+                this.fetchPokemons();
+            }
         },
 
         async fetchPokemonUrls() {
