@@ -16,14 +16,14 @@ onMounted(() => {
             <div
                 v-for="i in itemsPerPage"
                 :key="i"
-                class="bg-white rounded-lg shadow-md overflow-hidden"
+                class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
             >
-                <USkeleton class="h-48 w-full" />
+                <USkeleton class="h-48 w-full dark:bg-gray-700" />
                 <div class="p-4 flex flex-col justify-between flex-grow">
-                    <USkeleton class="h-6 w-3/4 mb-2" />
+                    <USkeleton class="h-6 w-3/4 mb-2 dark:bg-gray-700" />
                     <div class="flex gap-2">
-                        <USkeleton class="h-7 w-16 rounded-full" />
-                        <USkeleton class="h-6 w-16 rounded-full" />
+                        <USkeleton class="h-7 w-16 rounded-full dark:bg-gray-700" />
+                        <USkeleton class="h-6 w-16 rounded-full dark:bg-gray-700" />
                     </div>
                 </div>
             </div>
