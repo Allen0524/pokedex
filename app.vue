@@ -4,11 +4,9 @@ import AppFooter from "@/components/AppFooter.vue";
 </script>
 
 <template>
-    <div class="min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
+    <div class="min-h-[100dvh] grid grid-rows-[auto_1fr_auto] bg-gray-50 dark:bg-gray-900">
         <AppHeader />
-        <Container tag="main">
-            <NuxtPage />
-        </Container>
+        <NuxtPage />
         <AppFooter />
     </div>
 </template>

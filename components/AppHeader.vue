@@ -2,7 +2,7 @@
 const localePath = useLocalePath();
 const switchLocalePath = useSwitchLocalePath();
 const { locale } = useI18n();
-const languages = [
+const LANGUAGES = [
     { label: "English", value: "en" },
     { label: "简体中文", value: "zh-Hans" },
     { label: "繁體中文", value: "zh-Hant" },
@@ -20,10 +20,10 @@ const toggleDarkMode = () => {
 
 <template>
     <header
-        class="container sticky top-0 bg-gray-50 dark:bg-gray-900 mx-auto px-4 flex items-center z-50 justify-between py-10 transition-colors duration-300"
+        class="container sticky top-0 mx-auto px-4 flex items-center z-50 justify-between py-10 bg-gray-50 dark:bg-gray-900"
     >
         <!-- Logo -->
-        <NuxtLink :to="localePath('/')" class="flex items-center gap-3">
+        <NuxtLink :to="localePath('/')" class="flex items-center gap-3" aria-label="Go to homepage">
             <img src="/images/logo.webp" alt="PokéDex Logo" class="h-16 w-auto" />
             <span class="text-3xl font-bold font-comforter text-gray-800 dark:text-gray-100"
                 >PokeDict</span
@@ -32,7 +32,8 @@ const toggleDarkMode = () => {
 
         <!-- Naigation -->
         <div class="flex items-center gap-4">
-            <UPopover :popper="{ placement: 'bottom-end' }">
+            <!-- TODO: Change another component for better accessibility -->
+            <UPopover :popper="{ placement: 'bottom-end' }" aria-label="Select language">
                 <UButton
                     variant="ghost"
                     icon="i-heroicons-globe-alt"
@@ -43,7 +44,7 @@ const toggleDarkMode = () => {
                 <template #panel>
                     <div class="py-1 bg-white dark:bg-gray-800 rounded-md shadow-lg">
                         <NuxtLink
-                            v-for="item in languages"
+                            v-for="item in LANGUAGES"
                             :key="item.value"
                             :to="switchLocalePath(item.value)"
                             class="block px-6 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 whitespace-nowrap"

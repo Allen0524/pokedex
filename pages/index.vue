@@ -4,20 +4,33 @@ import { useI18n } from "vue-i18n";
 
 const localePath = useLocalePath();
 const { t } = useI18n();
+
+useHead({
+    title: "Pokédex",
+    meta: [
+        {
+            name: "description",
+            content:
+                "The most comprehensive Pokémon encyclopedia, guilding you through the secrets of every Pokémon.",
+        },
+    ],
+});
 </script>
 
 <template>
-    <Container tag="section" class="text-center max-w-[860px]">
-        <p class="text-left font-josefin text-4xl pt-16 pb-[30%]">
+    <Container tag="main" class="text-center max-w-[860px]">
+        <h1 class="text-left font-josefin text-4xl pt-16 pb-[30%] text-gray-900 dark:text-gray-100">
             The most comprehensive Pokémon encyclopedia, guilding you through the secrets of every
             Pokémon.
-        </p>
+        </h1>
 
         <NuxtLink
             :to="localePath('/pokemons')"
-            class="text-4xl px-8 py-3 text-indigo-700 transition-transform hover:scale-105"
+            :aria-label="t('common.explore')"
+            class="inline-flex items-center px-4 py-2 text-base font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
         >
-            {{ t("common.explore") }}
+            <span class="mr-2">{{ t("common.explore") }}</span>
+            <UIcon name="i-heroicons-arrow-right-20-solid" />
         </NuxtLink>
     </Container>
 </template>

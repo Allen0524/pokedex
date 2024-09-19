@@ -11,7 +11,7 @@ const { t } = useI18n();
                 <NuxtLink
                     class="underline underline-offset-2"
                     :to="localePath('/legal-information')"
-                    >{{ t("common.leagleInformation") }}</NuxtLink
+                    >{{ t("common.leaglInformation") }}</NuxtLink
                 >
             </li>
             <li>
@@ -33,7 +33,7 @@ const { t } = useI18n();
                     <NuxtLink
                         class="underline underline-offset-2"
                         :to="localePath('/legal-information')"
-                        >{{ t("common.leagleInformation") }}</NuxtLink
+                        >{{ t("common.leaglInformation") }}</NuxtLink
                     >
                 </li>
                 <li>
@@ -49,14 +49,19 @@ const { t } = useI18n();
             </ul>
             <div class="flex items-center gap-7">
                 <a
-                    target="_blank"
                     href="https://github.com/Allen0524/pokedex"
+                    aria-label="GitHub link"
+                    target="_blank"
                     rel="noopener noreferrer"
-                    class="p-1"
+                    class="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-colors duration-300"
                 >
                     <img src="/images/github.svg" alt="GitHub" class="w-4 h-4" />
                 </a>
-                <a href="mailto:william0318563@gmail.com" class="p-1">
+                <a
+                    href="mailto:william0318563@gmail.com"
+                    class="p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition-colors duration-300"
+                    aria-label="Gmail link"
+                >
                     <img src="/images/gmail.svg" alt="Gmail" class="w-4 h-4" />
                 </a>
             </div>
